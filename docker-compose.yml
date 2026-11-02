@@ -1,3 +1,4 @@
+
 services:
   db:
     image: pgvector/pgvector:pg16
@@ -6,10 +7,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: harshdb
     ports:
-      - : "5432:5432"
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgressql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pgdata           
-      
+  pgdata:
