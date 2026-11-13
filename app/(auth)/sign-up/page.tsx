@@ -19,8 +19,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { SocialProvider } from "@/types";
 import { signupSchema } from "@/types";
+import { signUp } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [pendingProvider] = useState<SocialProvider | null>(null);
 
   const form = useForm({
@@ -29,7 +35,28 @@ export default function SignupForm() {
       onChange: signupSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await signUp.email(
+        {
+          email: value.email,
+          name: value.username,
+          password: value.password,
+          callbackURL: "/",
+        },
+        {
+          onRequest: () => {
+            setIsLoading(true);
+          },
+          onSuccess: (ctx) => {
+            console.log(ctx);
+            router.push("/");
+            setIsLoading(false);
+          },
+          onError: (ctx) => {
+            console.log(ctx.error.message);
+            setIsLoading(false);
+          },
+        },
+      );
     },
   });
 
@@ -103,6 +130,7 @@ export default function SignupForm() {
                   return (
                     <div className="flex flex-col">
                       <Input
+                        autoComplete="off"
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
@@ -136,6 +164,7 @@ export default function SignupForm() {
                   return (
                     <div className="flex flex-col">
                       <Input
+                        autoComplete="off"
                         type="email"
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -170,6 +199,7 @@ export default function SignupForm() {
                   return (
                     <div className="flex flex-col">
                       <Input
+                        autoComplete="off"
                         type="password"
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -206,9 +236,9 @@ export default function SignupForm() {
                   <Button
                     type="submit"
                     className="mt-2 h-13 w-full rounded-full bg-[#ececec] text-[16px] font-semibold text-black hover:bg-white disabled:opacity-50"
-                    disabled={!canSubmit || !isDirty}
+                    disabled={!canSubmit || !isDirty || isLoading}
                   >
-                    {isSubmitting ? (
+                    {isSubmitting || isLoading ? (
                       <Loader2 className="size-5 animate-spin" />
                     ) : (
                       "Sign Up"
@@ -223,7 +253,7 @@ export default function SignupForm() {
         <CardFooter className="flex flex-col items-center pb-6">
           <div className="text-sm text-[#b4b4b4]">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-white hover:underline">
+            <Link href="/auth/sign-in" className="text-white hover:underline">
               Sign In
             </Link>
           </div>

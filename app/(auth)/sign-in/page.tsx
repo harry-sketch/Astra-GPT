@@ -19,8 +19,12 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { SocialProvider } from "@/types";
 import { createformSchema } from "@/types";
+import { signIn } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pendingProvider] = useState<SocialProvider | null>(null);
 
   const form = useForm({
@@ -30,6 +34,23 @@ export default function LoginForm() {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
+
+      await signIn.email(
+        { email: value.email, password: value.password, callbackURL: "/" },
+        {
+          onRequest: () => {
+            setIsLoading(true);
+          },
+          onSuccess: () => {
+            router.push("/");
+            setIsLoading(false);
+          },
+          onError: (ctx) => {
+            console.log(ctx.error.message);
+            setIsLoading(false);
+          },
+        },
+      );
     },
   });
 
@@ -181,9 +202,9 @@ export default function LoginForm() {
                   <Button
                     type="submit"
                     className="mt-2 h-13 w-full rounded-full bg-[#ececec] text-[16px] font-semibold text-black ... disabled:cursor-not-allowed disabled:hover:bg-[#ececec]"
-                    disabled={!canSubmit || !isDirty}
+                    disabled={!canSubmit || !isDirty || isLoading}
                   >
-                    {isSubmitting ? (
+                    {isSubmitting || isLoading ? (
                       <Loader2 className="size-5 animate-spin" />
                     ) : (
                       "Continue"
@@ -198,7 +219,7 @@ export default function LoginForm() {
         <CardFooter className="flex flex-col items-center pb-4">
           <div className="text-sm text-[#b4b4b4]">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-white hover:underline">
+            <Link href="/sign-up" className="text-white hover:underline">
               Sign up
             </Link>
           </div>

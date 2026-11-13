@@ -91,3 +91,5 @@ export const relations = defineRelations({ user, session, account }, (r) => ({
     }),
   },
 }));
+
+export const schema = { user, session, verification, account };
