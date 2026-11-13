@@ -198,7 +198,7 @@ export default function LoginForm() {
         <CardFooter className="flex flex-col items-center pb-4">
           <div className="text-sm text-[#b4b4b4]">
             Don&apos;t have an account?{" "}
-            <Link href="/auth/signup" className="text-white hover:underline">
+            <Link href="/signup" className="text-white hover:underline">
               Sign up
             </Link>
           </div>
