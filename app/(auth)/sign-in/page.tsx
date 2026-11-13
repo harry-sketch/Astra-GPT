@@ -21,6 +21,7 @@ import type { SocialProvider } from "@/types";
 import { createformSchema } from "@/types";
 import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -42,12 +43,14 @@ export default function LoginForm() {
             setIsLoading(true);
           },
           onSuccess: () => {
-            router.push("/");
             setIsLoading(false);
+            toast.success("Sign in successfull!!!");
+            router.push("/");
           },
           onError: (ctx) => {
             console.log(ctx.error.message);
             setIsLoading(false);
+            toast.error(ctx.error.message);
           },
         },
       );
