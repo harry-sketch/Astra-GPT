@@ -18,7 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const fontsVar = [inter].map(({ variable }) => variable).join(" ");
   return (
     <html lang="en" className={cn("h-full antialiased", fontsVar)}>
-      <body>
+      <body suppressHydrationWarning>
         <Toaster />
         <main className="min-h-full flex flex-col bg-black font-inter">
           {children}

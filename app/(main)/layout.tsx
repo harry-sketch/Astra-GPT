@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAuth } from "@/action/auth";
+import { getAuth } from "@/action";
 
 interface AuthProps {
   children: React.ReactNode;
