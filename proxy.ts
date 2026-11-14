@@ -1,27 +1,22 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getAuth } from "./action/auth";
 
 export async function proxy(req: NextRequest) {
-  const auth = await getAuth();
+  const auth = req.cookies.get("better-auth.session_token")?.value;
 
-  const signInPage = req.nextUrl.pathname.startsWith("/sign-in");
-  const signUpPage = req.nextUrl.pathname.startsWith("/sign-up");
+  const isAuthPage =
+    req.nextUrl.pathname.startsWith("/sign-in") ||
+    req.nextUrl.pathname.startsWith("/sign-up");
 
-  if (!signUpPage && !auth) {
-    return NextResponse.redirect(new URL("/sign-up", req.url));
+  if (!isAuthPage && !auth) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
-  if (auth && signUpPage) {
+  if (isAuthPage && auth) {
     return NextResponse.redirect(new URL("/", req.url));
   }
-
-  if (!signInPage && !auth) {
-    return NextResponse.redirect(new URL("/sign-up", req.url));
-  }
-
-  if (auth && signInPage) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+};
