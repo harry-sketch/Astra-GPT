@@ -63,6 +63,7 @@ export default function LoginForm() {
     await signIn.social(
       { provider: type },
       {
+        onRequest: () => setPendingProvider(type),
         onError: (ctx) => {
           console.log(ctx.error.message);
           toast.error("Something went wrong");
@@ -71,7 +72,6 @@ export default function LoginForm() {
         onSuccess: () => {
           router.push("/");
           toast.success("Sign in successfull!!!");
-          setPendingProvider("google");
         },
       },
     );
@@ -96,7 +96,7 @@ export default function LoginForm() {
             {/* Google Button */}
             <Button
               variant="outline"
-              disabled={false}
+              disabled={pendingProvider === "google"}
               className="h-13 w-full rounded-xl border-[#424242] bg-transparent text-[15px] font-normal transition-colors hover:bg-[#2f2f2f] hover:text-white disabled:opacity-70"
               onClick={() => handleSocialAuth("google")}
             >
@@ -107,13 +107,12 @@ export default function LoginForm() {
               )}
               Continue with Google
             </Button>
-
             {/* GitHub Button */}
             <Button
               variant="outline"
-              disabled={false}
+              disabled={pendingProvider === "github"}
               className="h-13 w-full rounded-xl border-[#424242] bg-transparent text-[15px] font-normal transition-colors hover:bg-[#2f2f2f] hover:text-white disabled:opacity-70"
-              onClick={() => {}}
+              onClick={() => handleSocialAuth("github")}
             >
               {pendingProvider === "github" ? (
                 <Loader2 className="mr-2 size-5 animate-spin" />
@@ -121,7 +120,7 @@ export default function LoginForm() {
                 <GithubIcon className="mr-2 size-5" />
               )}
               Continue with GitHub
-            </Button>
+            </Button>{" "}
           </div>
 
           <div className="relative my-6 flex items-center justify-center">
