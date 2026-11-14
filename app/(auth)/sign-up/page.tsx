@@ -19,16 +19,16 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { SocialProvider } from "@/types";
 import { signupSchema } from "@/types";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function SignupForm() {
   const router = useRouter();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [pendingProvider] = useState<SocialProvider | null>(null);
+  const [pendingProvider, setPendingProvider] = useState<SocialProvider | null>(
+    null,
+  );
 
   const form = useForm({
     defaultValues: { username: "", email: "", password: "" },
@@ -63,6 +63,24 @@ export default function SignupForm() {
     },
   });
 
+  const handleSocialAuth = async (type: SocialProvider) => {
+    await signIn.social(
+      { provider: type },
+      {
+        onRequest: () => setPendingProvider("google"),
+        onError: (ctx) => {
+          console.log(ctx.error.message);
+          toast.error("Something went wrong");
+          setPendingProvider(null);
+        },
+        onSuccess: () => {
+          router.push("/");
+          toast.success("Sign in successfull!!!");
+        },
+      },
+    );
+  };
+
   return (
     <div className="flex items-center justify-center h-dvh">
       <Card className="w-full max-w-110 border-[#262626] bg-[#121212] text-white">
@@ -83,7 +101,7 @@ export default function SignupForm() {
               variant="outline"
               disabled={false}
               className="h-13 w-full rounded-xl border-[#424242] bg-transparent text-[15px] font-normal transition-colors hover:bg-[#2f2f2f] hover:text-white disabled:opacity-70"
-              onClick={() => {}}
+              onClick={() => handleSocialAuth("google")}
             >
               {pendingProvider === "google" ? (
                 <Loader2 className="mr-2 size-5 animate-spin" />
