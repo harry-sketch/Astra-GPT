@@ -1,21 +1,47 @@
 "use client";
 
 import { Plus, ArrowUp } from "lucide-react";
-
 import {
   PromptInput,
   PromptInputBody,
   PromptInputTextarea,
 } from "@/components/ai-elements/prompt-input";
 import { SpeechInput } from "@/components/ai-elements/speech-input";
+import { useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 
 function InputContainer() {
+  const [input, setInput] = useState<string>("");
+
+  const { messages, sendMessage } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      prepareSendMessagesRequest: ({ messages }) => {
+        const lastMsg = messages.at(-1);
+
+        let lastText = "";
+
+        if (lastMsg && lastMsg.parts[0].type === "text") {
+          lastText = lastMsg.parts[0].text;
+        }
+        return {
+          body: {
+            message: lastText.trim(),
+          },
+        };
+      },
+    }),
+  });
+
   return (
     <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
       <PromptInput
         className="w-full bg-[#2f2f2f] rounded-[32px]"
         onSubmit={(message) => {
           console.log(message);
+          sendMessage({ text: input });
+          setInput("");
         }}
       >
         <PromptInputBody className="flex items-end w-full">
@@ -28,8 +54,8 @@ function InputContainer() {
 
           <div className="flex-1 min-w-0 items-center justify-center w-full h-full">
             <PromptInputTextarea
-              onChange={(e) => {}}
-              value={""}
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
               placeholder="Ask anything"
               className="w-full flex items-center justify-center bg-transparent border-none focus:ring-0 focus-visible:ring-0 py-3 text-[18px] text-zinc-100 placeholder:text-[#676767] resize-none min-h-11 max-h-50 leading-tight"
             />

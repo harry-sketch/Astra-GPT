@@ -1,5 +1,3 @@
-"use client";
-
 import InputContainer from "./InputContainer";
 
 export const ChatInterface = () => {
