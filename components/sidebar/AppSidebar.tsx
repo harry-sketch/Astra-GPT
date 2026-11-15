@@ -25,20 +25,20 @@ export async function AppSidebar({
   return (
     <Sidebar
       collapsible="icon"
-      className="bg-black border-none text-sidebar-foreground transition-all duration-300 ease-in-out"
+      className="bg-[#2f2f2f] border-none text-sidebar-foreground transition-all duration-300 ease-in-out"
       {...props}
     >
-      <SidebarHeader className="px-2 pt-3.5">
+      <SidebarHeader className="px-2 pt-3.5 bg-[#2f2f2f]">
         <div className="flex items-center justify-between group-data-[collapsible=icon]:justify-center">
-          <div className="flex items-center gap-2.5">Astra-GPT</div>
+          <div className="flex items-center gap-2.5 text-white">Astra-GPT</div>
           <div className="group-data-[collapsible=icon]:hidden">
-            <SidebarTrigger className="hover:bg-[#2f2f2f] text-[#b4b4b4] h-8 w-8 transition-colors" />
+            <SidebarTrigger className="hover:bg-[#2f2f2f] text-[#b4b4b4] h-8 w-8 transition-colors bg-[#2f2f2f]" />
           </div>
         </div>
       </SidebarHeader>
 
       {/* REMOVED group-data-[collapsible=icon]:hidden from SidebarContent */}
-      <SidebarContent className="px-1 mt-2">
+      <SidebarContent className="px-1 mt-2 bg-[#2f2f2f]">
         <SidebarGroup className="p-0">
           <SidebarMenu className="gap-0">
             {[
@@ -77,7 +77,7 @@ export async function AppSidebar({
         {/* </Suspense> */}
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="bg-[#2f2f2f]">
         <SidebarFooterComponent />
       </SidebarFooter>
       <SidebarRail />
