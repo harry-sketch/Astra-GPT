@@ -22,6 +22,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "a11y": {
+        "useSemanticElements": "off"
+      },
       "style": {
         "noNonNullAssertion": "off"
       },
