@@ -10,24 +10,34 @@ import { SpeechInput } from "@/components/ai-elements/speech-input";
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { useParams, useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 function InputContainer() {
+  const router = useRouter();
+
+  const params = useParams();
+
+  const [stableId] = useState(() => uuidv4());
+
+  const finalThreadId = params.thread_id || stableId;
+
   const [input, setInput] = useState<string>("");
 
   const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      prepareSendMessagesRequest: ({ messages }) => {
+      prepareSendMessagesRequest: ({ messages, body }) => {
         const lastMsg = messages.at(-1);
-
         let lastText = "";
-
         if (lastMsg && lastMsg.parts[0].type === "text") {
           lastText = lastMsg.parts[0].text;
         }
+
         return {
           body: {
             message: lastText.trim(),
+            threadId: body?.threadId,
           },
         };
       },
@@ -39,8 +49,20 @@ function InputContainer() {
       <PromptInput
         className="w-full bg-[#2f2f2f] rounded-[32px]"
         onSubmit={(message) => {
-          console.log(message);
-          sendMessage({ text: input });
+          if (!message.text.trim()) {
+            return;
+          }
+
+          sendMessage(message, {
+            body: {
+              threadId: finalThreadId,
+            },
+          });
+
+          if (!params.thread_id) {
+            router.push(`/c/${finalThreadId}`);
+          }
+
           setInput("");
         }}
       >
