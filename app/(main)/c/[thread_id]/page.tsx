@@ -11,7 +11,8 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { thread_id } = await params;
 
-  const messageHistory = await getMessagHistory({ thread_id, graph: app });
+  const messageHistory =
+    (await getMessagHistory({ thread_id, graph: app })) ?? [];
 
-  return <ChatInterface messageHistory={messageHistory ?? []} />;
+  return <ChatInterface messageHistory={messageHistory} />;
 }

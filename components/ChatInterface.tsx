@@ -19,8 +19,8 @@ export const ChatInterface: React.FC<Props> = ({ messageHistory }) => {
   const { messages, setMessages } = useChat({ chat });
 
   useEffect(() => {
-    const gg = convertLangChainToUI(messageHistory);
-    setMessages(gg);
+    const oldMessages = convertLangChainToUI(messageHistory);
+    setMessages(oldMessages);
   }, [messageHistory, setMessages]);
 
   return (
