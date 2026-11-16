@@ -50,7 +50,10 @@ export async function POST(req: Request) {
 
   const stream = await app.stream(
     { messages: [new HumanMessage(message)] },
-    { streamMode: ["values", "messages"] },
+    {
+      streamMode: ["values", "messages"],
+      configurable: { thread_id: threadId },
+    },
   );
 
   return createUIMessageStreamResponse({

@@ -11,6 +11,7 @@
         "@langchain/core": "^1.4.1",
         "@langchain/google": "^0.2.15",
         "@langchain/langgraph": "^1.7.4",
+        "@langchain/langgraph-checkpoint-postgres": "^1.1.3",
         "@langchain/openai": "^1.8.4",
         "@shadcn/react": "^0.3.1",
         "@streamdown/cjk": "^1.0.4",
@@ -331,6 +332,8 @@
     "@langchain/langgraph": ["@langchain/langgraph@1.7.4", "", { "dependencies": { "@langchain/langgraph-checkpoint": "^1.2.2", "@langchain/langgraph-sdk": "~1.16.0", "@langchain/protocol": "^0.0.21", "@standard-schema/spec": "1.1.0" }, "peerDependencies": { "@langchain/core": "^1.3.4", "zod": "^3.25.32 || ^4.2.0" } }, "sha512-4OOmXzMy7cCmFUpFFyMnlM0wunh3xBq5RETASXsUKM3yve4bJQxVZfR1l9NmIeDmbHYfPZIXQGtcE3I1jTHP6A=="],
 
     "@langchain/langgraph-checkpoint": ["@langchain/langgraph-checkpoint@1.2.2", "", { "peerDependencies": { "@langchain/core": "^1.1.48" } }, "sha512-KL3nzi7I61ll5nANCQe5RoJ5SqTFrE+si9IK6k7IIj9OrPkIKT/Dz0w8CyJF+K7OEuJfA33HvPrZqfzzW1DXDA=="],
+
+    "@langchain/langgraph-checkpoint-postgres": ["@langchain/langgraph-checkpoint-postgres@1.1.3", "", { "dependencies": { "pg": "^8.12.0", "postgres-array": "^3.0.4" }, "peerDependencies": { "@langchain/core": "^1.1.44", "@langchain/langgraph-checkpoint": "^1.2.0" } }, "sha512-mLMmiX5kCmsoSqEiTShKOwX2yDmQ9u1Rlow04XDCHgAaOLzutsl2agQcqBE2Ea2eM3KLg0vYX/IKI9ujpAKO5g=="],
 
     "@langchain/langgraph-sdk": ["@langchain/langgraph-sdk@1.16.0", "", { "dependencies": { "@langchain/protocol": "^0.0.21", "@types/json-schema": "^7.0.15", "p-queue": "^9.0.1", "p-retry": "^7.1.1" }, "peerDependencies": { "@langchain/core": "^1.3.2", "react": "^18 || ^19", "react-dom": "^18 || ^19" }, "optionalPeers": ["react", "react-dom"] }, "sha512-E1NZJDHmHxKBqbxGGahNSlvpI8oUo7UKs+Ce4XhGz2tvXRAyQfZeQppVzFkeQsYpueXvFiyMYuyUXz9X98/4+A=="],
 
@@ -1282,7 +1285,7 @@
 
     "postcss-selector-parser": ["postcss-selector-parser@7.1.7", "", { "dependencies": { "cssesc": "^3.0.0", "util-deprecate": "^1.0.2" } }, "sha512-wWBro/7hJ40ye6TPiXkUQoXKCw23xSsjriUvqd7Uls9Sso3oLiON1flc18cCdnjgCRXw4fBVqUJJeOdDTh3P3g=="],
 
-    "postgres-array": ["postgres-array@2.0.0", "", {}, "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA=="],
+    "postgres-array": ["postgres-array@3.0.4", "", {}, "sha512-nAUSGfSDGOaOAEGwqsRY27GPOea7CNipJPOA7lPbdEpx5Kg3qzdP0AaWC5MlhTWV9s4hFX39nomVZ+C4tnGOJQ=="],
 
     "postgres-bytea": ["postgres-bytea@1.0.1", "", {}, "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ=="],
 
@@ -1619,6 +1622,8 @@
     "p-queue/eventemitter3": ["eventemitter3@4.0.7", "", {}, "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw=="],
 
     "parse-entities/@types/unist": ["@types/unist@2.0.11", "", {}, "sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA=="],
+
+    "pg-types/postgres-array": ["postgres-array@2.0.0", "", {}, "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA=="],
 
     "prompts/kleur": ["kleur@3.0.3", "", {}, "sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w=="],
 
