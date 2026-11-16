@@ -1,0 +1,36 @@
+import { Chat, type UIMessage } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+
+interface IChat {
+  chat: Chat<UIMessage>;
+}
+
+const createChatInstance = () => {
+  return new Chat<UIMessage>({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      prepareSendMessagesRequest: ({ messages, body }) => {
+        const lastMsg = messages.at(-1);
+        let lastText = "";
+        if (lastMsg && lastMsg.parts[0].type === "text") {
+          lastText = lastMsg.parts[0].text;
+        }
+
+        return {
+          body: {
+            message: lastText.trim(),
+            threadId: body?.threadId,
+          },
+        };
+      },
+    }),
+  });
+};
+
+export const useStore = create<IChat>()(
+  devtools(() => ({
+    chat: createChatInstance(),
+  })),
+);

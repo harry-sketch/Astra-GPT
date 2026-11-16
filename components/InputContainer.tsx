@@ -9,9 +9,9 @@ import {
 import { SpeechInput } from "@/components/ai-elements/speech-input";
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { useStore } from "@/store/useStore";
 
 function InputContainer() {
   const router = useRouter();
@@ -24,25 +24,9 @@ function InputContainer() {
 
   const [input, setInput] = useState<string>("");
 
-  const { messages, sendMessage } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-      prepareSendMessagesRequest: ({ messages, body }) => {
-        const lastMsg = messages.at(-1);
-        let lastText = "";
-        if (lastMsg && lastMsg.parts[0].type === "text") {
-          lastText = lastMsg.parts[0].text;
-        }
+  const { chat } = useStore();
 
-        return {
-          body: {
-            message: lastText.trim(),
-            threadId: body?.threadId,
-          },
-        };
-      },
-    }),
-  });
+  const { messages, sendMessage } = useChat({ chat });
 
   return (
     <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
@@ -92,6 +76,7 @@ function InputContainer() {
             />
 
             <button
+              disabled={!input.length}
               type="submit"
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black hover:bg-[#ececec] transition-all"
             >
