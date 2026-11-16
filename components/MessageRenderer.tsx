@@ -26,7 +26,7 @@ const MessageRenderer: React.FC<Props> = ({ messages }) => {
                 return (
                   <Fragment key={`${message.id}-${i}`}>
                     <Message from={message.role} className="text-white">
-                      <MessageContent className="">
+                      <MessageContent className="text-white">
                         <MessageResponse>{part.text}</MessageResponse>
                       </MessageContent>
                     </Message>

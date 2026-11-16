@@ -31,7 +31,7 @@ function InputContainer() {
   return (
     <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
       <PromptInput
-        className="w-full bg-[#2f2f2f] rounded-[32px]"
+        className="w-full bg-secondary-foreground rounded-lg"
         onSubmit={(message) => {
           if (!message.text.trim()) {
             return;
