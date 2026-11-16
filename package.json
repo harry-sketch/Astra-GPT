@@ -12,6 +12,7 @@
     "db:migrate": "npx drizzle-kit migrate"
   },
   "dependencies": {
+    "@ai-sdk/langchain": "^3.0.173",
     "@ai-sdk/react": "^4.0.177",
     "@base-ui/react": "^1.9.0",
     "@langchain/anthropic": "^1.6.5",

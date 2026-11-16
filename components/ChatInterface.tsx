@@ -9,12 +9,12 @@ import { Conversation, ConversationContent } from "./ai-elements/conversation";
 export const ChatInterface = () => {
   const { chat } = useStore();
 
-  const { messages } = useChat({ chat });
+  const { messages, status } = useChat({ chat });
 
   return (
     <>
       {messages.length > 0 ? (
-        <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden">
+        <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden text-white">
           <div className="flex flex-col h-full w-full">
             <div className="flex-1 min-h-0">
               <Conversation className="h-full">

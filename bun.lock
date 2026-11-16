@@ -4,6 +4,7 @@
     "": {
       "name": "astra-gpt",
       "dependencies": {
+        "@ai-sdk/langchain": "^3.0.173",
         "@ai-sdk/react": "^4.0.177",
         "@base-ui/react": "^1.9.0",
         "@langchain/anthropic": "^1.6.5",
@@ -64,6 +65,8 @@
   ],
   "packages": {
     "@ai-sdk/gateway": ["@ai-sdk/gateway@4.0.146", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-rJ5NQSyjnpo6HSBEYc9Ff6k1EROUuB7KeAfHYVbVDsk68ynY0Eb8JeWflZKXlT6NhYgqyCiBDxE5blXWACXMKQ=="],
+
+    "@ai-sdk/langchain": ["@ai-sdk/langchain@3.0.173", "", { "dependencies": { "@ai-sdk/provider-utils": "5.0.81", "ai": "7.0.173" }, "peerDependencies": { "@langchain/core": ">=1.0.0", "@langchain/langgraph": ">=0.2.0" }, "optionalPeers": ["@langchain/langgraph"] }, "sha512-eNYFS1yeHQW78jleCqz6k9ppqv2t5wy1GLvrNE2wYiBKFnpOJihhne/GMFdIedZHrhkl6jc1ynYWrOJiIrN0Ew=="],
 
     "@ai-sdk/mcp": ["@ai-sdk/mcp@2.0.99", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81", "cross-spawn": "^7.0.6", "pkce-challenge": "^5.0.1" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-9yDWp5WABLMRNKYuLrLIXGtJpIkjwXAdJyYUSu5XpD0cqtuM11LGqk3gb5XGiShco3RT/79W8CkqXskegTtWKw=="],
 

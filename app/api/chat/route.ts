@@ -1,10 +1,12 @@
+import { toUIMessageStream } from "@ai-sdk/langchain";
 import { HumanMessage } from "@langchain/core/messages";
-import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { app } from "@/state/workflow";
-import { threads } from "@/db/schema/chat-schema";
+import { createUIMessageStreamResponse } from "ai";
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 import { getAuth } from "@/action";
+import { db } from "@/db";
+import { threads } from "@/db/schema/chat-schema";
+import { app } from "@/state/workflow";
 
 export async function POST(req: Request) {
   const authData = await getAuth();
@@ -46,13 +48,12 @@ export async function POST(req: Request) {
     );
   }
 
-  const result = app.invoke({
-    messages: [new HumanMessage(message)],
+  const stream = await app.stream(
+    { messages: [new HumanMessage(message)] },
+    { streamMode: ["values", "messages"] },
+  );
+
+  return createUIMessageStreamResponse({
+    stream: toUIMessageStream(stream),
   });
-
-  for (const msg of (await result).messages) {
-    console.log(`[${msg.type}]: ${msg.text}`);
-  }
-
-  return NextResponse.json({ message: "Hello" }, { status: 200 });
 }

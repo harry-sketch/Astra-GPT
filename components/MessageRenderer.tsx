@@ -25,8 +25,8 @@ const MessageRenderer: React.FC<Props> = ({ messages }) => {
                 const isLastMessage = messageIndex === messages.length - 1;
                 return (
                   <Fragment key={`${message.id}-${i}`}>
-                    <Message from={message.role}>
-                      <MessageContent>
+                    <Message from={message.role} className="text-white">
+                      <MessageContent className="">
                         <MessageResponse>{part.text}</MessageResponse>
                       </MessageContent>
                     </Message>
@@ -48,6 +48,7 @@ const MessageRenderer: React.FC<Props> = ({ messages }) => {
                   </Fragment>
                 );
               }
+
               default:
                 return null;
             }
