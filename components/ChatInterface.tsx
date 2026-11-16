@@ -5,15 +5,27 @@ import { useStore } from "@/store/useStore";
 import InputContainer from "./InputContainer";
 import MessageRenderer from "./MessageRenderer";
 import { Conversation, ConversationContent } from "./ai-elements/conversation";
+import type { StoredMessage } from "@langchain/core/messages";
+import { useEffect } from "react";
+import { convertLangChainToUI } from "../lib/utils";
 
-export const ChatInterface = () => {
+interface Props {
+  messageHistory: StoredMessage[];
+}
+
+export const ChatInterface: React.FC<Props> = ({ messageHistory }) => {
   const { chat } = useStore();
 
-  const { messages } = useChat({ chat });
+  const { messages, setMessages } = useChat({ chat });
+
+  useEffect(() => {
+    const gg = convertLangChainToUI(messageHistory);
+    setMessages(gg);
+  }, [messageHistory, setMessages]);
 
   return (
     <>
-      {messages.length > 0 ? (
+      {messages.length > 0 || (messageHistory && messageHistory?.length > 0) ? (
         <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden text-white">
           <div className="flex flex-col h-full w-full">
             <div className="flex-1 min-h-0">
