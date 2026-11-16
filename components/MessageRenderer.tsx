@@ -9,6 +9,7 @@ import {
   MessageResponse,
 } from "./ai-elements/message";
 import { CopyIcon, RefreshCcwIcon } from "lucide-react";
+import { ProductCarousel } from "./gen-ui/ProductCarousel";
 
 interface Props {
   messages: UIMessage[];
@@ -48,6 +49,35 @@ const MessageRenderer: React.FC<Props> = ({ messages }) => {
                   </Fragment>
                 );
               }
+
+              case "dynamic-tool":
+                switch (part.toolName) {
+                  case "display_products": {
+                    if (part.state === "output-available") {
+                      const output = part.output as any;
+
+                      const toolContent =
+                        typeof output === "string"
+                          ? JSON.parse(output)
+                          : output?.kwargs?.content
+                            ? JSON.parse(output.kwargs.content)
+                            : output;
+                      return (
+                        <div key={`${part.toolCallId}-${i}`}>
+                          <ProductCarousel
+                            query={toolContent.query}
+                            products={toolContent.products}
+                          />
+                        </div>
+                      );
+                    }
+
+                    return null;
+                  }
+
+                  default:
+                    return null;
+                }
 
               default:
                 return null;

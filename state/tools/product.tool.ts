@@ -26,18 +26,22 @@ export const productTool = tool(
   async ({ query, location = "India" }) => {
     try {
       const response = await getJson({
-        engine: "google",
+        engine: "google_shopping",
         api_key: process.env.SERP_API_KEY,
         q: query,
         location: location,
       });
 
-      if (!response.shopping_results.length) {
+      if (
+        !response.shopping_results.length ||
+        response.shopping_results.length === 0
+      ) {
         return { query, products: [] };
       }
 
-      const products = response.shopping_results.map(
-        (p: ProductFromAPI, index: number): Product => {
+      const products = response.shopping_results
+        .slice(0, 6)
+        .map((p: ProductFromAPI, index: number): Product => {
           return {
             id: p.product_id || String(index),
             title: p.title,
@@ -47,8 +51,9 @@ export const productTool = tool(
             rating: p.rating,
             thumbnail: p.thumbnail,
           };
-        },
-      );
+        });
+
+      console.log({ products });
 
       return { query, products };
     } catch (err) {

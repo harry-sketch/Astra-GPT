@@ -22,6 +22,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "performance": {
+        "noImgElement": "off"
+      },
       "a11y": {
         "useSemanticElements": "off"
       },
