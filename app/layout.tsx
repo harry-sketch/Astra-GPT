@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "cn";
 import { Toaster } from "@/components/ui/sonner";
+import { QueryClientWrapper } from "../tanstack/QueryClientWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,10 +20,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={cn("h-full antialiased", fontsVar)}>
       <body suppressHydrationWarning>
-        <Toaster />
-        <main className="min-h-full flex flex-col bg-black font-inter">
-          {children}
-        </main>
+        <QueryClientWrapper>
+          <Toaster />
+          <main className="min-h-full flex flex-col bg-black font-inter">
+            {children}
+          </main>
+        </QueryClientWrapper>
       </body>
     </html>
   );
