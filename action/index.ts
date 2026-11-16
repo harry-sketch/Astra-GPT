@@ -6,7 +6,7 @@ import { db } from "../db";
 import { threads } from "../db/schema/chat-schema";
 import { and, desc, eq } from "drizzle-orm";
 import {
-  BaseMessage,
+  type BaseMessage,
   mapChatMessagesToStoredMessages,
 } from "@langchain/core/messages";
 
