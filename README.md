@@ -1,6 +1,6 @@
 # ✨ Astra-GPT
 
-### Your AI workspace with multiple models, intelligent memory, and generative UI.
+### Your AI workspace with multiple models, intelligent memory, and generative UI -->.
 
 Astra-GPT is a multi-model AI application that brings different AI providers into a single conversational experience. Users can interact with models from Anthropic, Google Gemini, and OpenAI, explore personalized AI conversations, and build a persistent memory that helps AI models understand relevant context from previous interactions.
 
