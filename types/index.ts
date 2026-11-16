@@ -14,3 +14,9 @@ export const signupSchema = z.object({
 export type TFormSchmeaType = z.infer<typeof createformSchema>;
 
 export type SocialProvider = "google" | "github";
+
+export type ThreadType = {
+  id: string;
+  title: string;
+  // createdAt?: Date;
+};

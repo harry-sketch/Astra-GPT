@@ -9,7 +9,7 @@ import { Conversation, ConversationContent } from "./ai-elements/conversation";
 export const ChatInterface = () => {
   const { chat } = useStore();
 
-  const { messages, status } = useChat({ chat });
+  const { messages } = useChat({ chat });
 
   return (
     <>
