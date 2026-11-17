@@ -17,53 +17,55 @@ import {
   ModelSelectorTrigger,
 } from "@/components/ai-elements/modal-selector";
 import { cn } from "@/lib/utils";
+import type { TModelId } from "../model/model.types";
+import { useStore } from "../store/useStore";
+import type { TModeType } from "../types";
 
-const models = [
+const models: TModeType[] = [
   {
     chef: "OpenAI",
     chefSlug: "openai",
-    id: "gpt-5-mini",
-    name: "GPT 5 mini",
-    providers: ["openai", "azure"],
+    id: "gpt-6-luna",
+    name: "GPT 6 Luna",
+    providers: ["openai"],
     isProOnly: false,
   },
   {
     chef: "OpenAI",
     chefSlug: "openai",
-    id: "gpt-5-nano",
+    id: "gpt-5.4-nano",
     name: "GPT 5 nano",
-    providers: ["openai", "azure"],
-    isProOnly: false,
+    providers: ["openai"],
+    isProOnly: true,
   },
   {
     chef: "Google",
     chefSlug: "google",
-    id: "gemini-3.1-pro-preview",
-    name: "Gemini 3.1 Pro",
-    providers: ["google", "google-vertex"],
+    id: "gemini-3.8-flash",
+    name: "Gemini 3.8 Flash",
+    providers: ["google"],
     isProOnly: true,
   },
   {
     chef: "Anthropic",
     chefSlug: "anthropic",
-    id: "claude-sonnet-4-20250514",
-    name: "Claude 4 Sonnet",
-    providers: ["anthropic", "azure", "google-vertex", "amazon-bedrock"],
+    id: "claude-fable-5-2",
+    name: "Claude Fable 5",
+    providers: ["anthropic"],
     isProOnly: true,
   },
 ];
 
 interface ModelItemProps {
   model: (typeof models)[0];
-  selectedModel: string;
-  onSelect: (id: string) => void;
+  selectedModel: TModelId;
+  onSelect: (id: TModelId) => void;
   isLocked: boolean;
 }
 
 const ModelItem = memo(
   ({ model, selectedModel, onSelect, isLocked }: ModelItemProps) => {
     const handleSelect = useCallback(() => {
-      // Prevent selection if the model is locked
       if (isLocked) return;
       onSelect(model.id);
     }, [onSelect, model.id, isLocked]);
@@ -105,12 +107,11 @@ ModelItem.displayName = "ModelItem";
 export const ModelSelectorComponent = () => {
   const [open, setOpen] = useState(false);
 
-  const selectedModel = "gpt-5-mini";
-  const setSelectedModel = (modelId: string) => {};
+  const { selectedModel, setSelectedModel } = useStore();
 
   const userHaveProPlan = false;
 
-  const handleModelSelect = (id: string) => {
+  const handleModelSelect = (id: TModelId) => {
     setSelectedModel(id);
     setOpen(false);
   };

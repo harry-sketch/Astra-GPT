@@ -1,4 +1,4 @@
-export type TModelProvider = "google" | "anthropic" | "open-ai";
+export type TModelProvider = "google" | "anthropic" | "openai";
 export type TTier = "FREE" | "PAID";
 export type TReasoningEffort =
   | "none"

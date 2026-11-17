@@ -24,7 +24,7 @@ function InputContainer() {
 
   const [input, setInput] = useState<string>("");
 
-  const { chat } = useStore();
+  const { chat, selectedModel } = useStore();
 
   const { sendMessage } = useChat({ chat });
 
@@ -40,7 +40,7 @@ function InputContainer() {
           sendMessage(message, {
             body: {
               threadId: finalThreadId,
-              selectedModel: "gpt-6-luna",
+              selectedModel,
             },
           });
 

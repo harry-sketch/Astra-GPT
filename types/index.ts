@@ -1,4 +1,5 @@
 import z from "zod";
+import type { TModelId, TModelProvider } from "@/model/model.types";
 
 export const createformSchema = z.object({
   email: z.email("Invalid email address"),
@@ -18,5 +19,22 @@ export type SocialProvider = "google" | "github";
 export type ThreadType = {
   id: string;
   title: string;
-  // createdAt?: Date;
+  createdAt?: Date;
+};
+
+export type TModelChef = "OpenAI" | "Google" | "Anthropic";
+
+export type TModelName =
+  | "GPT 6 Luna"
+  | "GPT 5 nano"
+  | "Gemini 3.8 Flash"
+  | "Claude Fable 5";
+
+export type TModeType = {
+  chef: TModelChef;
+  id: TModelId;
+  name: TModelName;
+  chefSlug: TModelProvider;
+  isProOnly: boolean;
+  providers: [TModelProvider];
 };

@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import { getAuth } from "@/action";
 import { db } from "@/db";
 import { threads } from "@/db/schema/chat-schema";
+import type { TModelId } from "@/model/model.types";
 import { app } from "@/state/workflow";
 
 export async function POST(req: Request) {
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
       configurable: { thread_id: threadId },
       context: {
         userId: authData.user.id,
-        model: selectedModel,
+        selectedModel: selectedModel as TModelId,
       },
     },
   );

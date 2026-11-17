@@ -5,13 +5,14 @@ import { BASE_SYSTEM_PROMPT_TEMPLATE } from "@/prompts";
 import type { MessagesState } from "@/state/state";
 import { tools } from "@/state/tools/tools";
 import { waitUntil } from "@vercel/functions";
-import { ingestEventsToPolar } from "../../action";
+import { ingestEventsToPolar } from "@/action";
+import type { TModelId } from "@/model/model.types";
 
 export const callAgent: GraphNode<typeof MessagesState> = async (
   state,
   runtime,
 ) => {
-  const selectedModel = runtime.context?.selectedModel;
+  const selectedModel: TModelId = runtime.context?.selectedModel;
 
   const userId = runtime.context?.userId;
 

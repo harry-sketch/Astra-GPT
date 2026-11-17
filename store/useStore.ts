@@ -2,9 +2,12 @@ import { Chat, type UIMessage } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import type { TModelId } from "../model/model.types";
 
 interface IChat {
   chat: Chat<UIMessage>;
+  selectedModel: TModelId;
+  setSelectedModel: (modelId: TModelId) => void;
 }
 
 const createChatInstance = () => {
@@ -31,7 +34,9 @@ const createChatInstance = () => {
 };
 
 export const useStore = create<IChat>()(
-  devtools(() => ({
+  devtools((set) => ({
+    selectedModel: "gpt-6-luna",
+    setSelectedModel: (modelId: TModelId) => set({ selectedModel: modelId }),
     chat: createChatInstance(),
   })),
 );
