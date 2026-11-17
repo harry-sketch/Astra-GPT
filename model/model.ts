@@ -1,11 +1,11 @@
 import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatGoogle } from "@langchain/google";
 import { ChatOpenAI } from "@langchain/openai";
-import type { IModelConfig, TModelId, TModelRegistry } from "./mode.types";
+import type { IModelConfig, TModelId, TModelRegistry } from "./model.types";
 
 export const MODEL_REGISTRY: TModelRegistry = {
   "gpt-6-luna": {
-    provider: "open-ai",
+    provider: "openai",
     tier: "FREE",
     options: {
       temperature: 0,
@@ -17,27 +17,18 @@ export const MODEL_REGISTRY: TModelRegistry = {
     },
   },
   "gpt-5.4-nano": {
-    provider: "open-ai",
+    provider: "openai",
     tier: "PAID",
     options: {
-      temperature: 0,
-      maxTokens: 800,
       maxRetries: 6,
-      reasoning: {
-        effort: "minimal",
-      },
     },
   },
   "gpt-4.1-nano": {
-    provider: "open-ai",
+    provider: "openai",
     tier: "PAID",
     options: {
       temperature: 0,
       maxTokens: 800,
-      maxRetries: 6,
-      reasoning: {
-        effort: "minimal",
-      },
     },
   },
   "gemini-3.8-flash": {
@@ -46,7 +37,6 @@ export const MODEL_REGISTRY: TModelRegistry = {
     options: {
       maxTokens: 800,
       maxRetries: 6,
-      temperature: 0,
     },
   },
   "claude-fable-5-2": {
@@ -62,7 +52,7 @@ export const MODEL_REGISTRY: TModelRegistry = {
 export const getBaseModel = (modelId: TModelId, config: IModelConfig) => {
   const baseModel = { model: modelId, ...config.options };
 
-  if (config.provider === "open-ai") {
+  if (config.provider === "openai") {
     return new ChatOpenAI({
       ...baseModel,
       apiKey: process.env.OPENAI_API_KEY,

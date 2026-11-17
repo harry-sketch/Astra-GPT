@@ -102,9 +102,9 @@ export const ingestEventsToPolar = async ({
   outputTokens: number;
   totalTokens: number;
 }) => {
-  console.log({ model });
-
   try {
+    console.log({ model });
+
     const result = await ingestEvents(pClient)({
       events: [
         {

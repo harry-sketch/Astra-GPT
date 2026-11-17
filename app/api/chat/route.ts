@@ -8,6 +8,9 @@ import { db } from "@/db";
 import { threads } from "@/db/schema/chat-schema";
 import type { TModelId } from "@/model/model.types";
 import { app } from "@/state/workflow";
+import { getStateExternalCustomers } from "@polar-sh/sdk/2026-10/services/customers";
+import { pClient } from "../../../polar/polar";
+import { MODEL_REGISTRY } from "../../../model/model";
 
 export async function POST(req: Request) {
   const authData = await getAuth();
@@ -45,6 +48,30 @@ export async function POST(req: Request) {
   if (existingThread && existingThread.userId !== authData.user.id) {
     return NextResponse.json(
       { message: "Forbidden, You are not authorized" },
+      { status: 403 },
+    );
+  }
+
+  try {
+    const modeToBeUsed = MODEL_REGISTRY[selectedModel as TModelId];
+
+    if (modeToBeUsed.tier === "PAID") {
+      const customerState = await getStateExternalCustomers(pClient)(
+        authData.user.id,
+      );
+      const hasPro = customerState.active_subscriptions.length > 0;
+
+      if (!hasPro) {
+        return NextResponse.json(
+          { message: "This model needs a subscription" },
+          { status: 403 },
+        );
+      }
+    }
+  } catch (error) {
+    console.log("erx", error);
+    return NextResponse.json(
+      { message: "This model needs a subscription" },
       { status: 403 },
     );
   }

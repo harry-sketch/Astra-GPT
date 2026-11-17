@@ -17,9 +17,10 @@ import {
   ModelSelectorTrigger,
 } from "@/components/ai-elements/modal-selector";
 import { cn } from "@/lib/utils";
-import type { TModelId } from "../model/model.types";
-import { useStore } from "../store/useStore";
-import type { TModeType } from "../types";
+import type { TModelId } from "@/model/model.types";
+import { useStore } from "@/store/useStore";
+import type { TModeType } from "@/types";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const models: TModeType[] = [
   {
@@ -109,7 +110,7 @@ export const ModelSelectorComponent = () => {
 
   const { selectedModel, setSelectedModel } = useStore();
 
-  const userHaveProPlan = false;
+  const { data: userHaveProPlan } = useSubscription();
 
   const handleModelSelect = (id: TModelId) => {
     setSelectedModel(id);
