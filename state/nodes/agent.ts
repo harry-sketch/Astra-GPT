@@ -4,8 +4,8 @@ import { getDynamicModel } from "@/model/model";
 import { BASE_SYSTEM_PROMPT_TEMPLATE } from "@/prompts";
 import type { MessagesState } from "@/state/state";
 import { tools } from "@/state/tools/tools";
-import { ingestEventsToPolar } from "@/polar/helpers";
 import { waitUntil } from "@vercel/functions";
+import { ingestEventsToPolar } from "../../action";
 
 export const callAgent: GraphNode<typeof MessagesState> = async (
   state,

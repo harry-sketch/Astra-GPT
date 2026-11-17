@@ -9,6 +9,9 @@ import {
   type BaseMessage,
   mapChatMessagesToStoredMessages,
 } from "@langchain/core/messages";
+import type { TModelId } from "../model/model.types";
+import { pClient } from "../polar/polar";
+import { ingestEvents } from "@polar-sh/sdk/2026-10/services/events";
 
 export const getAuth = async () => {
   return auth.api.getSession({
@@ -83,5 +86,43 @@ export const getMessagHistory = async ({
     return modifiedMsgs;
   } catch (error) {
     console.log("Erorr in fetching single Thread", error);
+  }
+};
+
+export const ingestEventsToPolar = async ({
+  userId,
+  model,
+  inputTokens,
+  outputTokens,
+  totalTokens,
+}: {
+  userId: string;
+  model: TModelId;
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+}) => {
+  try {
+    const result = await ingestEvents(pClient)({
+      events: [
+        {
+          name: "llm_tokens",
+          external_customer_id: userId,
+          metadata: {
+            model,
+            inputTokens,
+            outputTokens,
+            total_tokens: totalTokens,
+          },
+        },
+      ],
+    });
+
+    console.log("Polar ingestion response:", result);
+
+    return result;
+  } catch (error) {
+    console.error("Polar ingestion failed:", error);
+    throw error;
   }
 };

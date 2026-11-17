@@ -13,14 +13,10 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 
 export default function ChatbotUserProfile() {
-  // ── Static user data (replace with auth session later) ──
-  const user = {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    image: "/logo.png",
-  };
+  const { data } = useSession();
 
   // ── Static subscription state (replace with API call later) ──
   const isProSubscription = true;
@@ -33,6 +29,8 @@ export default function ChatbotUserProfile() {
     createdAt: "2025-11-15T00:00:00.000Z",
   };
 
+  if (!data) return;
+
   const usagePercent =
     (usageData.consumedUnits / usageData.creditedUnits) * 100;
 
@@ -43,9 +41,9 @@ export default function ChatbotUserProfile() {
         <CardContent className="p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex items-center gap-5">
             <Avatar className="h-24 w-24 rounded-2xl">
-              <AvatarImage src={user.image} alt={user.name} />
+              <AvatarImage src={data.user.image ?? ""} alt={data.user.name} />
               <AvatarFallback className="rounded-2xl text-lg">
-                {user.name
+                {data.user.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
@@ -54,9 +52,9 @@ export default function ChatbotUserProfile() {
 
             <div className="space-y-1">
               <h2 className="text-2xl font-semibold tracking-tight">
-                {user.name}
+                {data.user.name}
               </h2>
-              <p className="text-muted-foreground text-sm">{user.email}</p>
+              <p className="text-muted-foreground text-sm">{data.user.email}</p>
               <div className="flex items-center gap-3 pt-1">
                 <Badge variant="secondary" className="rounded-xl">
                   {"user"}
