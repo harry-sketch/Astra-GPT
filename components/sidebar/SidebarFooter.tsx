@@ -26,22 +26,20 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
 import { Spinner } from "../ui/spinner";
+import { useSession } from "@/lib/auth-client";
+import Link from "next/link";
 
 export function SidebarFooterComponent() {
+  const { data } = useSession();
+
   const { isMobile } = useSidebar();
 
   const isPending = false;
 
-  const user = {
-    name: "codersgyan",
-    email: "codersgyan@gmail.com",
-    image: "/logo.png",
-  };
-
   return (
     <SidebarMenu className="bg-[#2f2f2f] text-white">
       <SidebarMenuItem>
-        {user && (
+        {data?.user && (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
@@ -51,7 +49,10 @@ export function SidebarFooterComponent() {
                   </div>
                 ) : (
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={user.image} alt={user.name} />
+                    <AvatarImage
+                      src={data?.user.image ?? ""}
+                      alt={data.user.name}
+                    />
                     <AvatarFallback>
                       <Skeleton className="h-full w-full rounded-full" />
                     </AvatarFallback>
@@ -59,8 +60,8 @@ export function SidebarFooterComponent() {
                 )}
 
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">{data.user.name}</span>
+                  <span className="truncate text-xs">{data.user.email}</span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4" />
               </div>
@@ -75,14 +76,21 @@ export function SidebarFooterComponent() {
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={user.image} alt={user.name} />
+                      <AvatarImage
+                        src={data.user.image ?? ""}
+                        alt={data.user.name}
+                      />
                       <AvatarFallback>
                         <Skeleton className="h-full w-full rounded-full" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-medium">{user.name}</span>
-                      <span className="truncate text-xs">{user.email}</span>
+                      <span className="truncate font-medium">
+                        {data.user.name}
+                      </span>
+                      <span className="truncate text-xs">
+                        {data.user.email}
+                      </span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
@@ -96,10 +104,12 @@ export function SidebarFooterComponent() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Account
-                </DropdownMenuItem>
+                <Link href="/profile" className="cursor-pointer">
+                  <DropdownMenuItem>
+                    <BadgeCheck />
+                    Account
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   <CreditCard />
                   Billing
