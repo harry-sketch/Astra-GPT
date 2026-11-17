@@ -13,7 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { useCustomerMeter } from "@/hooks/useCustomMeter";
 import { useSubscription } from "@/hooks/useSubscription";
 
@@ -84,7 +84,14 @@ export default function ChatbotUserProfile() {
                 Pro Member
               </Button>
             ) : (
-              <Button>
+              <Button
+                onClick={async () => {
+                  await authClient.checkout({
+                    products: [process.env.POLAR_PRODUCT_ID!],
+                    slug: "PRO",
+                  });
+                }}
+              >
                 <Sparkles />
                 Upgrade to Pro
               </Button>

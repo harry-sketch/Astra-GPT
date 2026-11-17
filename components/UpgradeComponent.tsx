@@ -1,13 +1,20 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
+import { useSubscription } from "@/hooks/useSubscription";
 import { authClient } from "../lib/auth-client";
 
 export function UpgradeComponent() {
+  const { data } = useSubscription();
+
+  if (data) return null;
+
   return (
     <div className="absolute left-1/2 -translate-x-1/2">
       <Button
         onClick={async () => {
           await authClient.checkout({
+            products: [process.env.POLAR_PRODUCT_ID!],
             slug: "PRO",
           });
         }}

@@ -18,6 +18,5 @@ export const useCustomerMeter = () => {
 
       return data.items[0];
     },
-    staleTime: 5 * 60 * 1000,
   });
 };
