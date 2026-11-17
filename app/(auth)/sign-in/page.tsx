@@ -71,7 +71,6 @@ export default function LoginForm() {
         },
         onSuccess: () => {
           router.push("/");
-          toast.success("Sign in successfull!!!");
         },
       },
     );

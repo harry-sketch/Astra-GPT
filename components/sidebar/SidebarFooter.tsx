@@ -5,6 +5,7 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
+  Loader2,
   LogOut,
   Sparkles,
 } from "lucide-react";
@@ -26,13 +27,38 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
 import { Spinner } from "../ui/spinner";
-import { useSession } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth-client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function SidebarFooterComponent() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { data } = useSession();
 
   const { isMobile } = useSidebar();
+
+  const handleDisconnect = async () => {
+    await signOut({
+      callbackURL: "/sign-in",
+      fetchOptions: {
+        onRequest: () => setIsLoading(true),
+        onError: (ctx) => {
+          console.log(ctx.error.message);
+          toast.error("Error while signing out");
+          setIsLoading(false);
+        },
+        onSuccess: () => {
+          router.push("/sign-in");
+          toast.success("Signed out successfull");
+          setIsLoading(false);
+        },
+      },
+    });
+  };
 
   const isPending = false;
 
@@ -120,9 +146,13 @@ export function SidebarFooterComponent() {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {}}>
+              <DropdownMenuItem onClick={handleDisconnect}>
                 <LogOut />
-                Log out
+                {isLoading ? (
+                  <Loader2 className="mr-2 size-5 animate-spin" />
+                ) : (
+                  "Log out"
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
