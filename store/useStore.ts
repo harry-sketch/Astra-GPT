@@ -22,6 +22,7 @@ const createChatInstance = () => {
           body: {
             message: lastText.trim(),
             threadId: body?.threadId,
+            selectedModel: body?.selectedModel,
           },
         };
       },

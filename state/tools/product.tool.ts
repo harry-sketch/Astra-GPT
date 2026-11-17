@@ -53,8 +53,6 @@ export const productTool = tool(
           };
         });
 
-      console.log({ products });
-
       return { query, products };
     } catch (err) {
       console.error("Error fetching the google shopping products", err);

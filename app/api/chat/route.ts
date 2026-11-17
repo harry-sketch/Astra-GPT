@@ -11,15 +11,15 @@ import { app } from "@/state/workflow";
 export async function POST(req: Request) {
   const authData = await getAuth();
 
-  const { message, threadId } = await req.json();
+  const { message, threadId, selectedModel } = await req.json();
 
-  if (!message || !threadId) {
+  if (!message || !threadId || !selectedModel) {
     return NextResponse.json({ message: "Message not found" }, { status: 400 });
   }
 
   if (!authData?.user) {
     return NextResponse.json(
-      { message: "Forbidden, You are not authrorized" },
+      { message: "Forbidden, You are not authorized" },
       { status: 403 },
     );
   }
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
   if (existingThread && existingThread.userId !== authData.user.id) {
     return NextResponse.json(
-      { message: "Forbidden, You are not authrorized" },
+      { message: "Forbidden, You are not authorized" },
       { status: 403 },
     );
   }
@@ -53,6 +53,10 @@ export async function POST(req: Request) {
     {
       streamMode: ["values", "messages"],
       configurable: { thread_id: threadId },
+      context: {
+        userId: authData.user.id,
+        model: selectedModel,
+      },
     },
   );
 

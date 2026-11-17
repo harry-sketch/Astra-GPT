@@ -26,7 +26,7 @@ function InputContainer() {
 
   const { chat } = useStore();
 
-  const { messages, sendMessage } = useChat({ chat });
+  const { sendMessage } = useChat({ chat });
 
   return (
     <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
@@ -40,6 +40,7 @@ function InputContainer() {
           sendMessage(message, {
             body: {
               threadId: finalThreadId,
+              selectedModel: "gpt-6-luna",
             },
           });
 
