@@ -26,7 +26,11 @@ function InputContainer() {
 
   const { chat, selectedModel } = useStore();
 
-  const { sendMessage } = useChat({ chat });
+  const { sendMessage, error } = useChat({ chat });
+
+  if (error) {
+    alert(error.message);
+  }
 
   return (
     <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
