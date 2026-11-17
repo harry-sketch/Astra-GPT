@@ -18,7 +18,7 @@ export const useSubscription = () => {
         throw new Error("Errro in fetching subscription");
       }
 
-      return subscriptions.items[0];
+      return subscriptions.items[0] ?? null;
     },
   });
 };

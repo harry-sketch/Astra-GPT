@@ -27,19 +27,26 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "../ui/skeleton";
 import { Spinner } from "../ui/spinner";
-import { signOut, useSession } from "@/lib/auth-client";
+import { authClient, signOut, useSession } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export function SidebarFooterComponent() {
   const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data } = useSession();
+  const { data, isPending } = useSession();
+
+  const { data: subscriptionData, isPending: isSubsPending } =
+    useSubscription();
 
   const { isMobile } = useSidebar();
+
+  const isProUser = subscriptionData && !isSubsPending;
 
   const handleDisconnect = async () => {
     await signOut({
@@ -59,8 +66,6 @@ export function SidebarFooterComponent() {
       },
     });
   };
-
-  const isPending = false;
 
   return (
     <SidebarMenu className="bg-[#2f2f2f] text-white">
@@ -123,10 +128,12 @@ export function SidebarFooterComponent() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="bg-[#373669] border-[#3e3e4a] text-white !hover:bg-[#373669]/60 text-[12px] font-medium">
-                  <Sparkles />
-                  Pro Member
-                </DropdownMenuItem>
+                {isProUser && (
+                  <DropdownMenuItem className="bg-[#373669] border-[#3e3e4a] text-white !hover:bg-[#373669]/60 text-[12px] font-medium">
+                    <Sparkles />
+                    Pro Member
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
@@ -136,7 +143,11 @@ export function SidebarFooterComponent() {
                     Account
                   </DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={async () => {
+                    await authClient.customer.portal();
+                  }}
+                >
                   <CreditCard />
                   Billing
                 </DropdownMenuItem>

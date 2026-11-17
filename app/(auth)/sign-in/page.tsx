@@ -36,8 +36,6 @@ export default function LoginForm() {
       onChange: createformSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-
       await signIn.email(
         { email: value.email, password: value.password, callbackURL: "/" },
         {
@@ -60,17 +58,14 @@ export default function LoginForm() {
   });
 
   const handleSocialAuth = async (type: SocialProvider) => {
+    setPendingProvider(type);
     await signIn.social(
       { provider: type },
       {
-        onRequest: () => setPendingProvider(type),
         onError: (ctx) => {
           console.log(ctx.error.message);
           toast.error("Something went wrong");
           setPendingProvider(null);
-        },
-        onSuccess: () => {
-          router.push("/");
         },
       },
     );

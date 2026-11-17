@@ -87,7 +87,6 @@ export default function ChatbotUserProfile() {
               <Button
                 onClick={async () => {
                   await authClient.checkout({
-                    products: [process.env.POLAR_PRODUCT_ID!],
                     slug: "PRO",
                   });
                 }}
@@ -97,7 +96,13 @@ export default function ChatbotUserProfile() {
               </Button>
             )}
 
-            <Button variant="outline" className="rounded-xl">
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              onClick={async () => {
+                await authClient.customer.portal();
+              }}
+            >
               Manage Billing
             </Button>
           </div>

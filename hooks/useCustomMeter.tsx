@@ -16,7 +16,7 @@ export const useCustomerMeter = () => {
         throw new Error("");
       }
 
-      return data.items[0];
+      return data.items[0] ?? null;
     },
   });
 };

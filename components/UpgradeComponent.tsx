@@ -14,7 +14,6 @@ export function UpgradeComponent() {
       <Button
         onClick={async () => {
           await authClient.checkout({
-            products: [process.env.POLAR_PRODUCT_ID!],
             slug: "PRO",
           });
         }}

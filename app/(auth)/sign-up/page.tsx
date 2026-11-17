@@ -64,18 +64,14 @@ export default function SignupForm() {
   });
 
   const handleSocialAuth = async (type: SocialProvider) => {
+    setPendingProvider(type);
     await signIn.social(
       { provider: type },
       {
-        onRequest: () => setPendingProvider("google"),
         onError: (ctx) => {
           console.log(ctx.error.message);
           toast.error("Something went wrong");
           setPendingProvider(null);
-        },
-        onSuccess: () => {
-          router.push("/");
-          toast.success("Sign in successfull!!!");
         },
       },
     );
