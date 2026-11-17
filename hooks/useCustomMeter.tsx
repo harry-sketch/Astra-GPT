@@ -16,7 +16,7 @@ export const useCustomerMeter = () => {
         throw new Error("");
       }
 
-      return data;
+      return data.items[0];
     },
     staleTime: 5 * 60 * 1000,
   });

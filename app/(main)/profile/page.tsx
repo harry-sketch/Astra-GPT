@@ -14,25 +14,32 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+import { useCustomerMeter } from "@/hooks/useCustomMeter";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export default function ChatbotUserProfile() {
   const { data } = useSession();
 
-  // ── Static subscription state (replace with API call later) ──
-  const isProSubscription = true;
+  const { data: customerMeter } = useCustomerMeter();
 
-  // ── Static usage/meter data (replace with API call later) ──
-  const usageData = {
-    creditedUnits: 100000,
-    consumedUnits: 42500,
-    balance: 57500,
-    createdAt: "2025-11-15T00:00:00.000Z",
-  };
+  const { data: subscription } = useSubscription();
 
   if (!data) return;
 
-  const usagePercent =
-    (usageData.consumedUnits / usageData.creditedUnits) * 100;
+  const isProSubscription = subscription?.status === "active";
+
+  const usageData = {
+    creditedUnits: customerMeter?.credited_units,
+    consumedUnits: customerMeter?.consumed_units,
+    balance: customerMeter?.balance,
+    createdAt: customerMeter?.created_at
+      ? new Date(customerMeter.created_at).toLocaleDateString("en-IN")
+      : null,
+  };
+
+  const usagePercent = usageData.creditedUnits
+    ? ((usageData.consumedUnits ?? 0) / usageData.creditedUnits) * 100
+    : 0;
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 p-4">
@@ -113,9 +120,7 @@ export default function ChatbotUserProfile() {
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <CalendarDays className="h-4 w-4" /> Purchased
                 </div>
-                <span>
-                  {new Date(usageData.createdAt).toLocaleDateString()}
-                </span>
+                <span>{usageData.createdAt}</span>
               </div>
             </div>
           </CardContent>
