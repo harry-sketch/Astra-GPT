@@ -9,6 +9,9 @@ export const shouldContinue = (state: typeof MessagesState.State) => {
   if (toolCall) {
     return "tool-node";
   }
-
   return "end";
+};
+
+export const routeFromStart = () => {
+  return ["call-agent", "memory-node"];
 };

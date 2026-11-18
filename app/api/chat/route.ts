@@ -96,6 +96,9 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream),
     });
   } catch (error) {
-    return NextResponse.json({ message: "Bad Request" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Bad Request", error },
+      { status: 403 },
+    );
   }
 }

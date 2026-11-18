@@ -3,11 +3,20 @@ import { callAgent } from "./nodes/agent";
 import { MessagesState } from "./state";
 import { checkpointer } from "./memory/memory";
 import { toolNode } from "./tools/tools";
-import { shouldContinue } from "./edges/edges";
+import { routeFromStart, shouldContinue } from "./edges/edges";
+import { memoryNode } from "./nodes/memoryNode";
+import { getStore } from "../lib/store";
+
+export const store = await getStore();
 
 const graph = new StateGraph(MessagesState)
   .addNode("call-agent", callAgent)
   .addNode("tool-node", toolNode)
+  .addNode("memory-node", memoryNode)
+  .addConditionalEdges(START, routeFromStart, {
+    "call-agent": "call-agent",
+    "memory-node": "memory-node",
+  })
   .addEdge(START, "call-agent")
   .addConditionalEdges("call-agent", shouldContinue, {
     "tool-node": "tool-node",
@@ -15,4 +24,4 @@ const graph = new StateGraph(MessagesState)
   })
   .addEdge("call-agent", END);
 
-export const app = graph.compile({ checkpointer });
+export const app = graph.compile({ checkpointer, store });
