@@ -17,7 +17,7 @@ const graph = new StateGraph(MessagesState)
     "call-agent": "call-agent",
     "memory-node": "memory-node",
   })
-  .addEdge(START, "call-agent")
+  .addEdge("memory-node", END)
   .addConditionalEdges("call-agent", shouldContinue, {
     "tool-node": "tool-node",
     end: END,
